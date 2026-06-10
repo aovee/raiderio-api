@@ -15,7 +15,10 @@
   ],
   "license": "MIT",
   "author": "Aovee",
-  "repository": "https://github.com/aovee/raiderio-api",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aovee/raiderio-api.git"
+  },
   "files": [
     "dist"
   ],
@@ -41,7 +44,7 @@
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
-    "ky": "2.0.2"
+    "ky": "^2.0.2"
   },
   "devDependencies": {
     "@types/node": "25.9.2",
