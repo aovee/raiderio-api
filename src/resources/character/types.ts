@@ -32,7 +32,7 @@ export type ViewCharacterProfileResponse = Character & {
   mythic_plus_previous_weekly_highest_level_runs?: Array<KeystoneRun>
   mythic_plus_ranks?: MythicPlusRanks
   mythic_plus_recent_runs?: Array<KeystoneRun>
-  mythic_plus_scores_by_season?: MythicPlusSeasonScores
+  mythic_plus_scores_by_season?: Array<MythicPlusSeasonScores>
   mythic_plus_weekly_highest_level_runs?: Array<KeystoneRun>
   previous_mythic_plus_ranks?: MythicPlusRanks
   raid_achievement_curve?: Array<RaidAchievementCurve>
