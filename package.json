@@ -1,6 +1,6 @@
 {
   "name": "raiderio-api",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A typed Node.js client and helpers for the Raider.io API.",
   "keywords": [
     "api",
