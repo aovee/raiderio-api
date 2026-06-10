@@ -2,7 +2,7 @@ import type { Resource } from './core'
 import { HttpClient } from './http/http'
 import type { ClientOptions } from './http/types'
 import { characterProfile } from './resources/character/character'
-import { periods } from './resources/general/general'
+import { periods, search } from './resources/general/general'
 import { guildBossKill, guildProfile } from './resources/guild/guild'
 import {
   mythicPlusAffixes,
@@ -11,7 +11,8 @@ import {
   mythicPlusRuns,
   mythicPlusScoreTiers,
   mythicPlusSeasonCutoffs,
-  mythicPlusStaticData
+  mythicPlusStaticData,
+  mythicPlusSpecRankings
 } from './resources/mythic-plus/mythic-plus'
 import {
   raidingBossRankings,
@@ -52,7 +53,9 @@ export class RaiderioClient {
   /** General endpoints. See {@link periods}. */
   public readonly general = {
     periods: (...parameters: Parameters<typeof periods>) =>
-      this.http.request(periods(...parameters))
+      this.http.request(periods(...parameters)),
+    search: (...parameters: Parameters<typeof search>) =>
+      this.http.request(search(...parameters))
   }
 
   /** Guild endpoints. See {@link guildBossKill} and {@link guildProfile}. */
@@ -80,7 +83,9 @@ export class RaiderioClient {
       ...parameters: Parameters<typeof mythicPlusSeasonCutoffs>
     ) => this.http.request(mythicPlusSeasonCutoffs(...parameters)),
     staticData: (...parameters: Parameters<typeof mythicPlusStaticData>) =>
-      this.http.request(mythicPlusStaticData(...parameters))
+      this.http.request(mythicPlusStaticData(...parameters)),
+    specRankings: (...parameters: Parameters<typeof mythicPlusSpecRankings>) =>
+      this.http.request(mythicPlusSpecRankings(...parameters))
   }
 
   /** Raiding endpoints. */
