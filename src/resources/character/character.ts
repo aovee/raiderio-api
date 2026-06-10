@@ -24,6 +24,7 @@ export function characterProfile(
   fields?: Array<CharacterProfileFieldKey> // to improve
 ): Resource<ViewCharacterProfileResponse> {
   return {
+    apiVersion: 1,
     path: `${charactersBasePath}/profile`,
     query: {
       fields: fields?.join(','),

@@ -22,3 +22,10 @@ export interface Region {
 }
 
 export type RegionShortName = (typeof regions)[number]
+
+export interface SubRegion {
+  name: string
+  slug: string
+  short_name: string
+  regions: Array<Region>
+}

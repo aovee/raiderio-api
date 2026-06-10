@@ -31,6 +31,7 @@ export function raidingBossRankings(
   realm?: null | Realm['slug']
 ): Resource<ViewBossRankingsResponse> {
   return {
+    apiVersion: 1,
     path: `${raidingBasePath}/boss-rankings`,
     query: {
       boss,
@@ -56,6 +57,7 @@ export function raidingHallOfFame(
   region: RegionShortName
 ): Resource<ViewHallOfFameResponse> {
   return {
+    apiVersion: 1,
     path: `${raidingBasePath}/hall-of-fame`,
     query: {
       difficulty,
@@ -79,6 +81,7 @@ export function raidingProgression(
   region: RegionShortName
 ): Resource<ViewRaidProgressionResponse> {
   return {
+    apiVersion: 1,
     path: `${raidingBasePath}/progression`,
     query: {
       difficulty,
@@ -110,6 +113,7 @@ export function raidingRaidRankings(
   page = 0
 ): Resource<ViewRaidRankingsResponse> {
   return {
+    apiVersion: 1,
     path: `${raidingBasePath}/raid-rankings`,
     query: {
       difficulty,
@@ -133,6 +137,7 @@ export function raidingStaticData(
   expansionId: ExpansionId
 ): Resource<ViewRaidingStaticDataResponse> {
   return {
+    apiVersion: 1,
     path: `${raidingBasePath}/static-data`,
     query: { expansion_id: expansionId }
   }

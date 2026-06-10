@@ -30,7 +30,10 @@ export class HttpClient {
    * @returns The fully-qualified request URL.
    */
   public getRequestUrl<T>(resource: Resource<T>): string {
-    const slashSeparator = resource.path.startsWith('/') ? '' : '/'
+    const version = resource.apiVersion ? `v${resource.apiVersion}` : ''
+    const slashSeparator = resource.path.startsWith('/')
+      ? version
+      : version + '/'
 
     return `${raiderIoBasePath}${slashSeparator}${resource.path}`
   }

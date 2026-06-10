@@ -11,6 +11,7 @@ import type {
   RegionShortName,
   Role,
   SeasonReference,
+  SeasonSlug,
   Specialization,
   Stream,
   Video
@@ -118,6 +119,26 @@ export interface ViewMythicPlusSeasonCutoffsResponse {
 export interface ViewMythicPlusStaticDataResponse {
   dungeons: Array<SeasonDungeon>
   seasons: Array<MythicPlusStaticData>
+}
+
+/**
+ * Mythic plus spec rankings
+ */
+export interface ViewMythicPlusSpecRankingsResponse {
+  rankings: {
+    rankedCharacters: Array<MythicPlusRankedCharacter>
+    ui: {
+      region: RegionShortName | 'world'
+      season: SeasonSlug
+      class: string
+      spec: string
+      page: number
+      pageSize: number
+      lastPage: number
+    }
+    region: Region
+    realm: Realm | null
+  }
 }
 
 // ==================================================
@@ -429,3 +450,5 @@ interface SeasonDungeon {
   short_name: string
   slug: string
 }
+
+interface MythicPlusRankedCharacter {}

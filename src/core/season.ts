@@ -15,6 +15,7 @@ export const seasonReferences = [
   'previous'
 ]
 export type SeasonReference = (typeof seasonReferences)[number]
+export type SeasonSlug = Exclude<SeasonReference, 'current' | 'previous'>
 
 export const weekScopes = ['current', 'previous'] as const
 export type WeekScope = (typeof weekScopes)[number]

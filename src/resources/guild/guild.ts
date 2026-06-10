@@ -30,6 +30,7 @@ export function guildBossKill(
   difficulty: RaidDifficulty
 ): Resource<ViewGuildBossKillResponse> {
   return {
+    apiVersion: 1,
     path: `${guildsBasePath}/boss-kill`,
     query: {
       boss,
@@ -58,6 +59,7 @@ export function guildProfile(
   fields?: Array<GuildProfileFieldKey> // to improve
 ): Resource<ViewGuildProfileResponse> {
   return {
+    apiVersion: 1,
     path: `${guildsBasePath}/profile`,
     query: {
       fields: fields?.join(','),

@@ -1,4 +1,4 @@
-export const raiderIoBasePath = 'https://raider.io/api/v1'
+export const raiderIoBasePath = 'https://raider.io/api'
 
 // eslint-disable-next-line sonarjs/redundant-type-aliases
 export type ISODateString = string
@@ -11,6 +11,7 @@ export interface Resource<T> {
   _responseType?: T
   path: string
   query: Record<string, boolean | number | string | undefined>
+  apiVersion: number | null
 }
 
 export type ResourceResponse<T = unknown> = Promise<T>

@@ -4,6 +4,7 @@ import type {
   RegionShortName,
   Resource,
   SeasonReference,
+  SeasonSlug,
   WeekScope
 } from '../../core'
 import type {
@@ -13,7 +14,8 @@ import type {
   ViewMythicPlusRunsResponse,
   ViewMythicPlusScoreTiersResponse,
   ViewMythicPlusSeasonCutoffsResponse,
-  ViewMythicPlusStaticDataResponse
+  ViewMythicPlusStaticDataResponse,
+  ViewMythicPlusSpecRankingsResponse
 } from './types'
 
 // ==================================================
@@ -32,6 +34,7 @@ export function mythicPlusAffixes(
   locale: Locale = 'en'
 ): Resource<ViewMythicPlusAffixesResponse> {
   return {
+    apiVersion: 1,
     path: `${mythicPlusBasePath}/affixes`,
     query: {
       locale,
@@ -55,6 +58,7 @@ export function mythicPlusLeaderboardCapacity(
   realm?: null | string
 ): Resource<ViewMythicPlusLeaderboardCapacityResponse> {
   return {
+    apiVersion: 1,
     path: `${mythicPlusBasePath}/leaderboard-capacity`,
     query: {
       realm: realm ?? undefined,
@@ -76,6 +80,7 @@ export function mythicPlusRunDetails(
   id: number
 ): Resource<ViewMythicPlusRunDetailsResponse> {
   return {
+    apiVersion: 1,
     path: `${mythicPlusBasePath}/run-details`,
     query: {
       id,
@@ -102,6 +107,7 @@ export function mythicPlusRuns(
   affixes?: string
 ): Resource<ViewMythicPlusRunsResponse> {
   return {
+    apiVersion: 1,
     path: `${mythicPlusBasePath}/runs`,
     query: {
       affixes,
@@ -123,6 +129,7 @@ export function mythicPlusScoreTiers(
   season: SeasonReference = 'current'
 ): Resource<ViewMythicPlusScoreTiersResponse> {
   return {
+    apiVersion: 1,
     path: `${mythicPlusBasePath}/score-tiers`,
     query: { season }
   }
@@ -140,6 +147,7 @@ export function mythicPlusSeasonCutoffs(
   season: SeasonReference = 'current'
 ): Resource<ViewMythicPlusSeasonCutoffsResponse> {
   return {
+    apiVersion: 1,
     path: `${mythicPlusBasePath}/season-cutoffs`,
     query: { region, season }
   }
@@ -155,7 +163,41 @@ export function mythicPlusStaticData(
   expansionId: ExpansionId
 ): Resource<ViewMythicPlusStaticDataResponse> {
   return {
+    apiVersion: 1,
     path: `${mythicPlusBasePath}/static-data`,
     query: { expansion_id: expansionId }
+  }
+}
+
+// ==================================================
+
+/**
+ * @param region The region (us, eu, kr, tw or world).
+ * @param playableClass Class to filter (must be slugged)
+ * @param playableSpec Spec to filter (must be slugged)
+ * @param page Page to display (defaults to 0)
+ * @param pageSize Items per page (defaults to 100)
+ * @param season The season slug (e.g. "season-tww-4").
+ * @returns mythic plus spec rankings. See {@link ViewMythicPlusSpecRankingsResponse}
+ */
+export function mythicPlusSpecRankings(
+  region: RegionShortName | 'world',
+  playableClass: string,
+  playableSpec: string,
+  page: number = 0,
+  pageSize: number = 100,
+  season: SeasonSlug
+): Resource<ViewMythicPlusSpecRankingsResponse> {
+  return {
+    apiVersion: null,
+    path: `${mythicPlusBasePath}/rankings/specs`,
+    query: {
+      region: region,
+      class: playableClass,
+      spec: playableSpec,
+      season: season,
+      page: page.toString(),
+      pageSize: pageSize.toString()
+    }
   }
 }
