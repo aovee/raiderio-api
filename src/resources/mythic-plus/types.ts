@@ -21,6 +21,7 @@ import type {
   Spell,
   TalentLoadoutEntry
 } from '../character/types'
+import type { GuildSearchMatch } from '../general/types'
 import type { RecruitmentProfile } from '../raiding/types'
 
 // ==================================================
@@ -451,4 +452,44 @@ interface SeasonDungeon {
   slug: string
 }
 
-interface MythicPlusRankedCharacter {}
+type GuildDetails = GuildSearchMatch
+
+interface MythicPlusRankedCharacter {
+  rank: number
+  score: number
+  scoreColor: string
+  runs: Array<MythicPlusRankedCharacterRun>
+  character: MythicPlusRankedCharacterDetails
+  guild: GuildDetails
+  patronLevel: number
+}
+
+interface MythicPlusRankedCharacterRun {
+  zoneId: number
+  keystoneRunId: number
+  clearTimeMs: number
+  mythicLevel: number
+  score: number
+  period: number
+  affixes: number[]
+  loggedRunId: number
+  numChests: number
+}
+
+interface MythicPlusRankedCharacterDetails {
+  id: number
+  persona_id: number
+  name: string
+  class: PlayableClass
+  race: PlayableRace
+  faction: Faction
+  level: number
+  spec: Specialization
+  path: string
+  realm: Realm
+  region: Region
+  stream: Stream | null
+  recruitmentProfiles: Array<RecruitmentProfile>
+  flags: Record<string, unknown>
+  talentLoadoutText: string
+}

@@ -51,7 +51,7 @@ interface CharacterSearchMatch {
   class: PlayableClass
 }
 
-interface GuildSearchMatch {
+export interface GuildSearchMatch {
   id: number
   name: string
   displayName: null | string
