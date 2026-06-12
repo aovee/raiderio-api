@@ -452,7 +452,7 @@ interface SeasonDungeon {
   slug: string
 }
 
-type GuildDetails = GuildSearchMatch
+type GuildDetails = GuildSearchMatch['data']
 
 interface MythicPlusRankedCharacter {
   rank: number

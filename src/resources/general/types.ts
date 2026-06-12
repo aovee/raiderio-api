@@ -18,7 +18,7 @@ export interface ViewPeriodsResponse {
 }
 
 export type ViewSearchResponse = {
-  matches: Array<SearchMatch>
+  matches: Array<CharacterSearchMatch | GuildSearchMatch>
 }
 
 // ==================================================
@@ -37,29 +37,33 @@ interface RegionPeriod {
 }
 
 interface SearchMatch {
-  type: 'character' | 'guild'
   name: string
-  data: CharacterSearchMatch | GuildSearchMatch
 }
 
-interface CharacterSearchMatch {
-  id: number
-  name: string
-  faction: Faction
-  region: Region
-  realm: Realm
-  class: PlayableClass
+type CharacterSearchMatch = SearchMatch & {
+  type: 'character'
+  data: {
+    id: number
+    name: string
+    faction: Faction
+    region: Region
+    realm: Realm
+    class: PlayableClass
+  }
 }
 
-export interface GuildSearchMatch {
-  id: number
-  name: string
-  displayName: null | string
-  faction: Faction
-  realm: Realm
-  region: Region
-  subregion: SubRegion | null
-  path: string
-  logo: string
-  isDefaultLogo: boolean
+export type GuildSearchMatch = SearchMatch & {
+  type: 'guild'
+  data: {
+    id: number
+    name: string
+    displayName: null | string
+    faction: Faction
+    realm: Realm
+    region: Region
+    subregion: SubRegion | null
+    path: string
+    logo: string
+    isDefaultLogo: boolean
+  }
 }
