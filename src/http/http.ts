@@ -59,8 +59,8 @@ export class HttpClient {
     }
 
     const apiKey = options?.key ?? this.defaults.key
-    if (apiKey) {
-      searchParameters.api_key = apiKey
+    if (apiKey && resource.apiVersion) {
+      searchParameters.access_key = apiKey
     }
 
     const response = await this.ky.get<T>(url, {
