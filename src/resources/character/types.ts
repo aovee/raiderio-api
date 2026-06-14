@@ -174,6 +174,7 @@ interface GearItem {
   item_level: number
   item_quality: number
   name: string
+  tier: string
 }
 
 interface GemDetails {
