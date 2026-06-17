@@ -221,7 +221,12 @@ interface RaidAchievementMeta {
   total_count: number
 }
 
-type RankKey = 'overall' | `class_${Role}` | `spec_${number}` | keyof Role
+type RankKey =
+  | 'overall'
+  | 'class'
+  | `class_${Role}`
+  | `spec_${number}`
+  | keyof Role
 
 interface Ranks {
   realm: number
