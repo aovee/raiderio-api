@@ -1,13 +1,14 @@
 import type {
-  Faction,
   ISODateString,
   Ranks,
   Realm,
-  RealmSummary,
   Region,
+  RegionShortName,
   Stream,
+  SubRegion,
   Video
 } from '../../core'
+import type { Guild } from './../guild/types'
 
 // ==================================================
 
@@ -96,9 +97,9 @@ export type RaidDifficulty = (typeof raidDifficulties)[number]
 export type RaidDifficultyRankings = Record<RaidDifficulty, Ranks>
 
 export interface RaidEncounter {
-  defeatedAt: ISODateString | null
-  name: string
   slug: string
+  name: string
+  defeatedAt: ISODateString | null
 }
 
 export type RaidInstance = (typeof raidInstances)[number]
@@ -107,8 +108,8 @@ export type RaidProgression = Record<
   `${RaidDifficulty}_bosses_killed`,
   number
 > & {
-  expansion_id: number
   summary: string
+  expansion_id: number
   total_bosses: number
 }
 
@@ -118,131 +119,149 @@ export interface RecruitmentProfile {
   recruitment_profile_id: number
 }
 
+export type GuildInfos = Pick<
+  Guild,
+  'id' | 'name' | 'displayName' | 'faction'
+> & {
+  realm: Realm
+  region: Region
+  subregion: SubRegion
+  path: string
+  logo: string
+  isDefaultLogo: boolean
+}
+
 // ==================================================
 
-type BossRanking = Record<RaidInstance, RaidDifficultyRankings>
+interface BossRanking {
+  rank: number
+  regionRank: number
+  guild: GuildInfos
+  encountersDefeated: Array<
+    EncounterDefeated & {
+      attempts: number
+    }
+  >
+  doesVideoExist: boolean
+  streamers: GuildStreamers
+  recruitmentProfiles: Array<RecruitmentProfile>
+  itemLevelAvg: number
+}
 
 interface EncounterDefeated {
-  firstDefeated: ISODateString
-  lastDefeated: ISODateString
   slug: string
+  lastDefeated: ISODateString
+  firstDefeated: ISODateString
 }
 
 interface GuildDefeatEntry {
   defeatedAt: ISODateString
-  guild: GuildSummary
+  guild: GuildInfos
+  streamers: GuildStreamers
+  recruitmentProfiles: Array<RecruitmentProfile>
 }
 
 interface GuildEncounter {
-  encountersDefeated: Array<EncounterDefeated>
-  guild: RaidingGuild
-  rank: number
+  guild: GuildInfos
+  defeatedAt: ISODateString
+  streamers: GuildStreamers
+  doesVideoExist: boolean
+  recruitmentProfiles: Array<RecruitmentProfile>
 }
 
 interface GuildPrivacy {
-  raidComps: boolean
-  raidPercents: boolean
   raidPulls: boolean
-  shareraidUntil: ISODateString
-  wereRaidCompsRestricted: boolean
-  wereRaidPercentsRestricted: boolean
+  raidPercents: boolean
+  raidComps: boolean
   wereRaidPullsRestricted: boolean
+  wereRaidPercentsRestricted: boolean
+  wereRaidCompsRestricted: boolean
+  shareRaidUntil: ISODateString | null
 }
 
 interface GuildStreamers {
   count: number
-  description: string
-  stream: Stream
-}
-
-interface GuildSummary {
-  displayName: string
-  faction: Faction
-  id: number
-  name: string
-  realm: RealmSummary
-  region: Region
+  description?: string
+  stream: Stream | null
 }
 
 interface HallOfFameBossKill {
-  attemptedBy: {
-    attempts: Array<GuildEncounter>
-    totalCount: number
-  }
   boss: string
-  bossKillVideo: Video
   bossSummary: RaidBossSummary
+  bossKillVideo: Video
   defeatedBy: {
-    guilds: Array<GuildEncounter>
     totalCount: number
+    guilds: Array<GuildEncounter>
+  }
+  attemptedBy: {
+    totalCount: number
+    attempts: Array<GuildEncounter>
   }
 }
 
-type HallOfFameGuildEntry = GuildEncounter & {
-  defeatedAt: ISODateString
-  doesVideoExist: boolean
-  recruitmentProfiles: Array<RecruitmentProfile>
+interface HallOfFameGuildEntry {
+  rank: number
+  guild: GuildInfos
+  encountersDefeated: Array<EncounterDefeated>
   streamers: GuildStreamers
+  recruitmentProfiles: Array<RecruitmentProfile>
 }
 
 interface RaidBossSummary {
   encounterId: number
-  iconUrl: string
+  wowEncounterId: number
   name: string
-  ordinal: number
   slug: string
+  ordinal: number
   wingId: number
+  iconUrl: string
 }
 
 interface RaidEncounterStaticData {
   id: number
-  name: string
   slug: string
+  name: string
 }
 
-type RaidingGuild = GuildSummary & {
+type RaidingGuild = GuildInfos & {
   color: string
-  isDefaultLogo: boolean
-  logo: string
-  path: string
-  realm: Realm
 }
 
 interface RaidRaceProgressionEntry {
-  guilds: Array<GuildDefeatEntry>
   progress: number
   totalGuilds: number
+  guilds: Array<GuildDefeatEntry>
 }
 
 interface RaidRankingEncounter {
-  bestPercent: number
   id: number
-  isDefeated: boolean
+  slug: string
   numPulls: number
   pulStartedAt: ISODateString
-  slug: string
+  bestPercent: number
+  isDefeated: boolean
 }
 
 interface RaidRankingEntry {
-  encountersDefeated: Array<EncounterDefeated>
-  encountersPulled: Array<RaidRankingEncounter>
-  guild: RaidingGuild
-  guildPrivacy: GuildPrivacy
   rank: number
   regionRank: number
+  guild: RaidingGuild
+  encountersDefeated: Array<
+    EncounterDefeated & {
+      attempts: number
+    }
+  >
+  guildPrivacy: GuildPrivacy
+  encountersPulled: Array<RaidRankingEncounter>
 }
 
 interface RaidStaticData {
-  encounters: Array<RaidEncounterStaticData>
-  ends: {
-    ends: ISODateString
-  }
-  icon: string
   id: number
+  slug: RaidInstance
   name: string
   short_name: string
-  slug: RaidInstance
-  starts: {
-    starts: ISODateString
-  }
+  icon: string
+  starts: Record<RegionShortName, ISODateString>
+  ends: Record<RegionShortName, ISODateString>
+  encounters: Array<RaidEncounterStaticData>
 }

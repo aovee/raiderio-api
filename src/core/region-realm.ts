@@ -1,24 +1,24 @@
 export const regions = ['us', 'eu', 'tw', 'kr', 'cn'] as const
 export interface Realm {
-  altName: string
-  altSlug: string
-  connectedRealmId: number
   id: number
-  isConnected: boolean
-  locale: string
-  name: string
-  realmType: string
-  slug: string
-  wowConnectedRealmId: number
+  connectedRealmId: number
   wowRealmId: number
+  wowConnectedRealmId: number
+  name: string
+  altName: string
+  slug: string
+  altSlug: string
+  locale: string
+  isConnected: boolean
+  realmType: string
 }
 
 export type RealmSummary = Pick<Realm, 'isConnected' | 'name' | 'slug'>
 
 export interface Region {
   name: string
-  short_name: RegionShortName
   slug: string
+  short_name: RegionShortName
 }
 
 export type RegionShortName = (typeof regions)[number]

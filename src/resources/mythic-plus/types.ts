@@ -31,10 +31,10 @@ import type { RecruitmentProfile } from '../raiding/types'
  * @see {@link https://raider.io/api#/mythic_plus/getApiV1MythicplusAffixes}
  */
 export interface ViewMythicPlusAffixesResponse {
-  affix_details: Array<Affix>
-  leaderboard_url: string
   region: RegionShortName
   title: string
+  leaderboard_url: string
+  affix_details: Array<Affix>
 }
 
 /**
@@ -43,9 +43,9 @@ export interface ViewMythicPlusAffixesResponse {
  */
 export interface ViewMythicPlusLeaderboardCapacityResponse {
   realmListing: {
+    region: Region
     affixes: Array<LeaderboardAffix>
     realms: Array<RealmCapacityEntry>
-    region: Region
   }
 }
 
@@ -54,36 +54,36 @@ export interface ViewMythicPlusLeaderboardCapacityResponse {
  * @see {@link https://raider.io/api#/mythic_plus/getApiV1MythicplusRundetails}
  */
 export interface ViewMythicPlusRunDetailsResponse {
-  canManageOthersVideos: boolean
-  canManageOwnVideos: boolean
-  canViewPrivateDetails: boolean
-  clear_time_ms: number
-  completed_at: ISODateString
-  deleted_at: ISODateString | null
-  dungeon: Dungeon
-  faction: Faction
-  isPatron: boolean
-  isTournamentProfile: boolean
-  isViewingPrivateDetails: boolean
-  keystone_platoon_id: number
-  keystone_run_id: number
-  keystone_team_id: number
-  keystone_time_ms: number
-  logged_details: LoggedRunDetails
-  logged_run_id: number
-  loggedSources: Array<LoggedSource>
-  mythic_level: number
-  num_chests: number
-  num_modifiers_active: number
-  replay_limit: number
-  roster: Array<RunRosterMember>
-  runPrivacyMode: string
-  score: number
   season: SeasonReference
   status: string
+  dungeon: Dungeon
+  keystone_run_id: number
+  mythic_level: number
+  clear_time_ms: number
+  keystone_time_ms: number
+  completed_at: ISODateString
+  num_chests: number
   time_remaining_ms: number
+  logged_run_id: number
   videos: Array<Video>
   weekly_modifiers: Array<RunModifier>
+  num_modifiers_active: number
+  faction: Faction
+  deleted_at: ISODateString | null
+  score: number
+  logged_details: LoggedRunDetails
+  replay_limit: number
+  keystone_team_id: number
+  keystone_platoon_id: number
+  isTournamentProfile: boolean
+  roster: Array<RunRosterMember>
+  canManageOwnVideos: boolean
+  canManageOthersVideos: boolean
+  loggedSources: Array<LoggedSource>
+  isPatron: boolean
+  runPrivacyMode: string
+  canViewPrivateDetails: boolean
+  isViewingPrivateDetails: boolean
 }
 
 /**
@@ -145,51 +145,59 @@ export interface ViewMythicPlusSpecRankingsResponse {
 // ==================================================
 
 export interface KeystoneRun {
-  affixes: Array<Affix>
-  background_image_url: string
-  clear_time_ms: number
-  completed_at: ISODateString
   dungeon: string
-  icon_url: string
-  keystone_run_id: number
-  map_challenge_mode_id: number
-  mythic_level: number
-  num_keystone_upgrades: number
-  par_time_ms: number
-  role: Role
-  score: number
   short_name: string
-  spec: Specialization
-  url: string
-  zone_expansion_id: ExpansionId
+  mythic_level: number
+  completed_at: ISODateString
+  clear_time_ms: number
+  keystone_run_id: number
+  par_time_ms: number
+  num_keystone_upgrades: number
+  map_challenge_mode_id: number
   zone_id: number
+  zone_expansion_id: ExpansionId
+  icon_url: string
+  background_image_url: string
+  score: number
+  affixes: Array<Affix>
+  url: string
+  spec: Specialization
+  role: Role
+}
+
+export interface Affix {
+  id: number
+  name: string
+  description: string
+  icon: string
+  icon_url: string
+  wowhead_url: string
+}
+
+export interface KeystoneRunCount {
+  zone_id: number
+  dungeon: string
+  short_name: string
+  season_runs_total: number
+  season_runs_timed: number
 }
 
 // ==================================================
 
-interface Affix {
-  description: string
-  icon: string
-  icon_url: string
-  id: number
-  name: string
-  wowhead_url: string
-}
-
 interface Dungeon {
-  expansion_id: ExpansionId
-  group_finder_activity_ids: Array<number>
-  icon_url: string
+  type: string
   id: number
-  keystone_timer_ms: number
-  map_challenge_mode_id: number
   name: string
-  num_bosses: number
-  patch: string
   short_name: string
   slug: string
-  type: string
+  expansion_id: ExpansionId
+  icon_url: string
+  patch: string
   wowInstanceId: number
+  map_challenge_mode_id: number
+  keystone_timer_ms: number
+  num_bosses: number
+  group_finder_activity_ids: Array<number>
 }
 
 interface KeystoneRunRosterMember {
@@ -229,12 +237,13 @@ interface LeaderboardLowest {
 
 interface LoggedRunDetails {
   correlationId: string
+  route_key: null | string
+  showing_route_authorized: boolean
+  showing_replay_authorized: boolean
+  total_enemy_forces: number
   deaths: Array<RunDeathDetail>
   encounters: Array<RunEncounter>
-  route_key: null | string
-  showing_replay_authorized: boolean
-  showing_route_authorized: boolean
-  total_enemy_forces: number
+  enemies: Array<RunEnemy>
 }
 
 interface LoggedSource {
@@ -270,9 +279,9 @@ interface RankingKeystoneRun {
 }
 
 interface RealmCapacityEntry {
+  id: number
   connectedRealms: Array<Realm>
   dungeons: Array<RealmDungeonCapacity>
-  id: number
 }
 
 interface RealmDungeonCapacity {
@@ -281,88 +290,91 @@ interface RealmDungeonCapacity {
 }
 
 interface RunDeathDetail {
-  approximate_died_at: number
-  character_id: number
   logged_encounter_id: number
+  character_id: number
+  approximate_died_at: number
 }
 
 interface RunEncounter {
-  approximate_relative_ended_at: number
-  approximate_relative_started_at: number
-  boss: RunEncounterBoss
-  duration_ms: number
   id: number
-  is_success: boolean
-  pull_ended_at: ISODateString
-  pull_started_at: ISODateString
-  roster: Array<RunRosterMember>
   status: string
+  pull_started_at: ISODateString
+  pull_ended_at: ISODateString
+  duration_ms: number
+  is_success: boolean
+  approximate_relative_started_at: number
+  approximate_relative_ended_at: number
+  boss: RunEncounterBoss
+  roster: Array<RunRosterMember>
 }
 
 interface RunEncounterBoss {
   encounterId: number
-  iconUrl: string
+  wowEncounterId: number
   name: string
-  ordinal: number
   slug: string
+  ordinal: number
   wingId: number
+  iconUrl: string
+}
+
+interface RunEnemy {
+  name: string
+  enemy_forces_value: number
+  finished_at: ISODateString
+  npc_id: number
+  count: number
+  started_at: ISODateString
+  approximate_relative_ended_at: number
 }
 
 interface RunModifier {
-  description: string
-  icon: string
   id: number
+  icon: string
   name: string
   slug: string
+  description: string
 }
 
 interface RunRosterMember {
   character: {
-    artifactTraits: number
-    class: PlayableClass
-    gender: Gender
     id: number
-    itemLevelEquipped: number
+    persona_id: number
     name: string
+    class: PlayableClass
     race: PlayableRace
+    faction: Faction
+    level: number
+    spec: Pick<Specialization, 'id' | 'name' | 'slug' | 'is_melee' | 'role'>
+    path: string
     realm: Realm
     region: Region
-    spec: Specialization
-    talentLoadout: RunRosterTalentLoadout
-    thumbnail: string
+    stream: unknown
+    recruitmentProfiles: Array<RecruitmentProfile>
+    flags: number[]
+    talentLoadout: {
+      specId: number
+      heroSubTreeId: number | null
+      loadout: TalentLoadout['loadout']
+      exportLoadoutText: string
+      importLoadoutText: string
+      dbcIndexVersion: string
+      loadoutText: string
+    }
   }
-  guild: null | RunRosterMemberGuild
-  interestingAuras: Array<Spell>
-  isBanned: boolean
-  isTransfer: boolean
-  items: CharacterGear
   oldCharacter: null | RunRosterMember['character']
+  isTransfer: boolean
+  isBanned: boolean
+  guild: GuildInfos
+  role: Role
+  items: CharacterGear
   ranks: {
     realm: number
     region: number
     score: number
     world: number
   }
-  role: Role
-}
-
-interface RunRosterMemberGuild {
-  displayName: string
-  faction: Faction
-  id: number
-  isDefaultLogo: boolean
-  logo: string
-  name: string
-  path: string
-  realm: Realm
-  region: Region
-}
-
-interface RunRosterTalentLoadout {
-  heroSubTreeId: number
-  loadout: Array<TalentLoadoutEntry>
-  loadoutText: string
-  specId: number
+  interestingAuras: Array<Spell>
 }
 
 interface ScoreTier {

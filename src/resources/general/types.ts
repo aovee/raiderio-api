@@ -24,16 +24,16 @@ export type ViewSearchResponse = {
 // ==================================================
 
 interface Period {
-  end: string
   period: number
+  end: string
   start: string
 }
 
 interface RegionPeriod {
+  region: RegionShortName
   current: Period
   next: Period
   previous: Period
-  region: RegionShortName
 }
 
 interface SearchMatch {

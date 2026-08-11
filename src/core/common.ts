@@ -8,9 +8,9 @@ import type { Realm, Region } from './region-realm'
 import type { SeasonReference } from './season'
 
 export interface Ranks {
-  realm: number
-  region: number
   world: number
+  region: number
+  realm: number
 }
 
 export interface Stream {

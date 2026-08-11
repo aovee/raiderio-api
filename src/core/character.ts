@@ -14,19 +14,19 @@ export interface PlayableClass {
 }
 
 export interface PlayableRace {
-  faction: Faction
   id: number
   name: string
   slug: string
+  faction: Faction
 }
 
 export interface Specialization {
-  class_id: number
   id: number
-  is_melee: boolean
   name: string
-  ordinal: number
-  patch: string
-  role: Role
   slug: string
+  class_id: number
+  role: Role
+  is_melee: boolean
+  patch: string
+  ordinal: number
 }

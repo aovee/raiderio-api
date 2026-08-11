@@ -21,12 +21,13 @@ import type { RaidInstance, RaidProgression } from '../raiding/types'
  * @see {@link https://raider.io/api#/character/getApiV1CharactersProfile}
  */
 export type ViewCharacterProfileResponse = Character & {
-  covenant?: unknown
   gear?: CharacterGear
+  talentLoadout?: TalentLoadout
   guild?: {
     name: string
     realm: Realm['name']
   }
+  covenant?: unknown
   mythic_plus_best_runs?: Array<KeystoneRun>
   mythic_plus_highest_level_runs?: Array<KeystoneRun>
   mythic_plus_previous_weekly_highest_level_runs?: Array<KeystoneRun>
@@ -34,11 +35,11 @@ export type ViewCharacterProfileResponse = Character & {
   mythic_plus_recent_runs?: Array<KeystoneRun>
   mythic_plus_scores_by_season?: Array<MythicPlusSeasonScores>
   mythic_plus_weekly_highest_level_runs?: Array<KeystoneRun>
+  mythic_plus_dungeon_run_counts?: Array<KeystoneRunCount>
   previous_mythic_plus_ranks?: MythicPlusRanks
-  raid_achievement_curve?: Array<RaidAchievementCurve>
   raid_achievement_meta?: Array<RaidAchievementMeta>
+  raid_achievement_curve?: Array<RaidAchievementCurve>
   raid_progression?: Record<RaidInstance, RaidProgression>
-  talentLoadout?: TalentLoadout
 }
 
 // ==================================================
@@ -59,135 +60,140 @@ export const characterProfileFieldKeys = [
   'mythic_plus_highest_level_runs',
   'mythic_plus_weekly_highest_level_runs',
   'mythic_plus_previous_weekly_highest_level_runs',
+  'mythic_plus_dungeon_run_counts',
   'previous_mythic_plus_ranks'
 ] as const
 
 export interface Character {
-  achievement_points: number
+  name: string
+  race: PlayableRace['name']
+  class: PlayableClass['name']
   active_spec_name: Specialization['name']
   active_spec_role: Specialization['role']
-  class: PlayableClass['name']
-  faction: Faction
   gender: Gender
-  id?: number
-  last_crawled_at: ISODateString
-  name: string
-  profile_banner: string
-  profile_url: string
-  race: PlayableRace['name']
-  realm: string
-  region: RegionShortName
+  faction: Faction
+  achievement_points: number
   thumbnail_url: string
+  region: RegionShortName
+  realm: string
+  last_crawled_at: ISODateString
+  profile_url: string
+  profile_banner: string
+  id?: number
 }
 
 export interface CharacterGear {
-  artifact_traits: number
-  corruption: CorruptionDetails
   created_at: ISODateString
+  updated_at: ISODateString
+  source: string
   item_level_equipped: number
   item_level_total: number
-  items: ItemsContainer
-  source: string
-  updated_at: ISODateString
+  artifact_traits: number
+  corruption: CorruptionDetails
+  items?: ItemsContainer
 }
 
 export type CharacterProfileFieldKey =
   | (typeof characterProfileFieldKeys)[number]
-  | `mythic_plus_scores_by_season:${string}`
+  | `mythic_plus_scores_by_season:${string}` // Chainable via ":" (e.g. "mythic_plus_scores_by_season:current:season-mn-1")
+  | `mythic_plus_dungeon_run_counts:${string}` // Chainable via ":" (e.g. "mythic_plus_dungeon_run_counts:season-mn-1:season-tww-3")
   | `raid_achievement_curve:${string}`
   | `raid_achievement_meta:${string}`
 
 export interface TalentLoadout {
-  active_hero_tree: {
-    description: string
-    iconUrl: string
-    id: number
-    name: string
-    slug: string
-    traitTreeId: number
-  }
-  class_talents?: Array<TalentLoadoutEntry>
-  hero_talents?: Array<TalentLoadoutEntry>
-  loadout?: Array<TalentLoadoutEntry>
   loadout_spec_id: number
   loadout_text: string
+  loadout?: Array<TalentLoadoutEntry>
+  class_talents?: Array<TalentLoadoutEntry>
   spec_talents?: Array<TalentLoadoutEntry>
+  hero_talents?: Array<TalentLoadoutEntry>
+  active_hero_tree?: {
+    id: number
+    traitTreeId: number
+    name: string
+    slug: string
+    description: string
+    iconUrl: string
+  }
 }
 
 export interface TalentLoadoutEntry {
-  entryIndex: number
   node: TalentNodeChoice | TalentNodePassive | TalentNodeSpell
+  entryIndex: number
   rank: number
+  grantedNode: boolean
+  includeInSummary?: boolean
+}
+
+export interface Spell {
+  id: number
+  name: string
+  icon: string
+  school: number
+  rank: null | number
+  hasCooldown: boolean
 }
 
 // ==================================================
 
-export interface Spell {
-  hasCooldown: boolean
-  icon: string
-  id: number
-  name: string
-  rank: null | number
-  school: number
-}
-
 interface AzeritePower {
   id: number
   spell: {
-    icon: string
     id: number
+    school: number
+    icon: string
     name: string
     rank: null | number
-    school: number
   }
+  tier: number
 }
 
 interface CorruptionDetails {
   added: number
-  cloakRank: number
-  items: ItemsContainer
   resisted: number
-  spells: Array<unknown>
   total: number
-}
-
-interface EnchantDetails {
-  icon: string
-  id: number
-  name: string
+  cloakRank: number
+  spells: Array<unknown>
+  items: ItemsContainer
 }
 
 interface GearItem {
-  azerite_powers: Array<AzeritePower>
-  bonuses: Array<number>
-  corruption: Pick<CorruptionDetails, 'added' | 'resisted' | 'total'>
-  domination_shards: Array<unknown>
-  enchant: number
-  enchants: Array<EnchantDetails['id']>
-  enchants_details: Array<EnchantDetails>
-  gems: Array<GemDetails['id']>
-  gems_details: Array<GemDetails>
-  icon: string
-  is_azerite_power: boolean
-  is_legendary: boolean
   item_id: number
   item_level: number
-  item_quality: number
+  enchant: number
+  icon: string
   name: string
+  item_quality: number
+  is_legendary: boolean
+  is_azerite_power: boolean
+  azerite_powers: Array<AzeritePower | null>
+  corruption: Pick<CorruptionDetails, 'added' | 'resisted' | 'total'>
+  domination_shards: Array<unknown>
   tier: string
+  gems: Array<GemDetails['id']>
+  gems_detail: Array<GemDetails>
+  enchants: Array<EnchantDetails['id']>
+  enchants_detail: Array<EnchantDetails>
+  bonuses: Array<number>
 }
 
 interface GemDetails {
-  icon: string
   id: number
   name: string
+  icon: string
 }
 
-type ItemsContainer = Record<ItemSlot, GearItem>
+interface EnchantDetails {
+  id: number
+  name: string
+  icon: string
+}
+
+export type ItemsContainer = Record<ItemSlot, GearItem>
 
 interface MythicPlusSeasonScores {
-  scores: Record<ScoreKey, number>
   season: SeasonReference
+  scores: Record<ScoreKey, number>
   segments: Record<ScoreKey, MythicPlusScoreSegment>
 }
 
@@ -205,48 +211,43 @@ interface RaidAchievement {
 }
 
 interface RaidAchievementCurve {
-  aotc: ISODateString
   raid: RaidInstance
+  aotc: ISODateString
 }
 
 interface RaidAchievementMeta {
-  completed_achievements: Array<RaidAchievement>
+  tier: `tier_${number}`
   completed_count: number
+  total_count: number
   meta_achievement: {
     id: number
     raid: string
   }
-  remaining_achievements: Array<RaidAchievement>
-  tier: `tier_${number}`
-  total_count: number
+  completed_achievements: Array<RaidAchievement>
+  remaining_achievements: Array<Omit<RaidAchievement, 'timestamp'>>
 }
 
-type RankKey =
-  | 'overall'
-  | 'class'
-  | `class_${Role}`
-  | `spec_${number}`
-  | keyof Role
+type RankKey = 'overall' | 'class' | `class_${Role}` | `spec_${number}` | Role
 
 interface Ranks {
-  realm: number
-  region: number
   world: number
+  region: number
+  realm: number
 }
 
 type ScoreKey = 'all' | `spec${0 | 1 | 2 | 3}` | Role
 
 interface TalentNode {
-  col: number
-  entries: Array<TalentNodeEntryPassive | TalentNodeEntrySpell>
-  flags: number
   id: number
+  treeId: number
+  subTreeId: number
+  flags: number
+  entries: Array<TalentNodeEntryPassive | TalentNodeEntrySpell>
   important: boolean
   posX: number
   posY: number
   row: number
-  subTreeId: number
-  treeId: number
+  col: number
 }
 
 interface TalentNodeChoice extends TalentNode {
@@ -255,10 +256,10 @@ interface TalentNodeChoice extends TalentNode {
 
 interface TalentNodeEntry {
   id: number
-  maxRanks: number
-  spell: Spell
   traitDefinitionId: number
   traitSubTreeId: number
+  maxRanks: number
+  spell: Spell
 }
 
 interface TalentNodeEntryPassive extends TalentNodeEntry {

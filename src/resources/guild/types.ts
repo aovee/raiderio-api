@@ -39,18 +39,11 @@ export interface ViewGuildBossKillResponse {
  * Information about a guild
  * @see {@link https://raider.io/api#/guild/getApiV1GuildsProfile}
  */
-export interface ViewGuildProfileResponse {
-  displayName: null | string
-  faction: Faction
-  last_crawled_at: ISODateString
+export type ViewGuildProfileResponse = Omit<Guild, 'id'> & {
   members?: Array<GuildMember>
-  name: string
-  profile_url: string
   raid_encounters?: Array<RaidEncounter>
-  raid_progression?: Record<RaidInstance, RaidProgression>
+  raid_progression?: Record<RaidInstance, Omit<RaidProgression, 'expansion_id'>>
   raid_rankings?: Record<RaidInstance, RaidDifficultyRankings>
-  realm: Realm['name']
-  region: RegionShortName
 }
 
 // ==================================================
@@ -63,57 +56,77 @@ export const guildProfileKeys = {
 
 export type GuildProfileFieldKey =
   | (typeof guildProfileKeys)[keyof typeof guildProfileKeys]
+  | `raid_progression:${string}`
   | `raid_encounters:${RaidInstance}:${RaidDifficulty}`
+
+export interface Guild {
+  id?: number
+  name: string
+  displayName: null | string
+  faction: Faction
+  region: RegionShortName
+  realm: Realm['name']
+  last_crawled_at: ISODateString
+  profile_url: string
+}
 
 // ==================================================
 
 interface BossKill {
+  pulledAt: ISODateString
   defeatedAt: ISODateString
   durationMs: number
   isSuccess: boolean
   itemLevelEquippedAvg: number
   itemLevelEquippedMax: number
   itemLevelEquippedMin: number
-  pulledAt: ISODateString
 }
 
 interface BossKillRosterMember {
   character: {
-    artifactTraits: number
-    class: PlayableClass
-    gender: Gender
     id: number
-    interestingAuras: Array<Spell>
-    itemLevelEquipped: number
-    items: CharacterGear
     name: string
     race: PlayableRace
-    realm: Realm
-    recruitmentProfiles: Array<RecruitmentProfile>
-    region: Region
+    class: PlayableClass
     spec: Specialization
-    talentLoadout: TalentLoadout
+    talentLoadout: {
+      specId: number
+      heroSubTreeId: number | null
+      loadout: TalentLoadout['loadout']
+      exportLoadoutText: string
+      importLoadoutText: string
+      dbcIndexVersion: string
+      loadoutText: string
+    }
+    gender: Gender
     thumbnail: string
+    itemLevelEquipped: number
+    artifactTraits: number
+    realm: Realm
+    region: Region
+    items: CharacterGear
+    interestingAuras: Array<Spell>
+    recruitmentProfiles: Array<RecruitmentProfile>
   }
   vantus: boolean
 }
 
 interface GuildMember {
+  rank: number
   character: Pick<
     Character,
-    | 'achievement_points'
+    | 'name'
+    | 'race'
+    | 'class'
     | 'active_spec_name'
     | 'active_spec_role'
-    | 'class'
-    | 'faction'
     | 'gender'
-    | 'last_crawled_at'
-    | 'name'
-    | 'profile_banner'
-    | 'profile_url'
-    | 'race'
-    | 'realm'
+    | 'faction'
+    | 'achievement_points'
     | 'region'
+    | 'realm'
+    | 'last_crawled_at'
+    | 'profile_url'
+    | 'profile_banner'
   >
-  rank: number
 }
