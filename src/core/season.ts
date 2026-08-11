@@ -11,6 +11,7 @@ export const seasonReferences = [
   'season-tww-2',
   'season-tww-3',
   'season-mn-1',
+  'season-mn-2',
   'current',
   'previous'
 ]
