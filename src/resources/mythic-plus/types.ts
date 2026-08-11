@@ -1,7 +1,6 @@
 import type {
   ExpansionId,
   Faction,
-  Gender,
   ISODateString,
   LocalizedString,
   PlayableClass,
@@ -16,13 +15,9 @@ import type {
   Stream,
   Video
 } from '../../core'
-import type {
-  CharacterGear,
-  Spell,
-  TalentLoadoutEntry
-} from '../character/types'
+import type { CharacterGear, Spell, TalentLoadout } from '../character/types'
 import type { GuildSearchMatch } from '../general/types'
-import type { RecruitmentProfile } from '../raiding/types'
+import type { GuildInfos, RecruitmentProfile } from '../raiding/types'
 
 // ==================================================
 

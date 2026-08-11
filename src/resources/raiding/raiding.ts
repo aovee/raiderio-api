@@ -1,4 +1,4 @@
-import type { ExpansionId, Realm, RegionShortName, Resource } from '../../core'
+import type { ExpansionId, RegionShortName, Resource } from '../../core'
 import type {
   RaidDifficulty,
   RaidInstance,
@@ -28,7 +28,7 @@ export function raidingBossRankings(
   boss: string,
   difficulty: RaidDifficulty,
   region: RegionShortName,
-  realm?: null | Realm['slug']
+  realm?: string | null // Realm slug, can be prefixed with 'connected-' to filter by connected realm (e.g. 'connected-area-52')
 ): Resource<ViewBossRankingsResponse> {
   return {
     apiVersion: 1,

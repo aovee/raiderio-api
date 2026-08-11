@@ -21,7 +21,7 @@ export function characterProfile(
   region: string,
   realm: string,
   name: string,
-  fields?: Array<CharacterProfileFieldKey> // to improve
+  fields?: Array<CharacterProfileFieldKey>
 ): Resource<ViewCharacterProfileResponse> {
   return {
     apiVersion: 1,

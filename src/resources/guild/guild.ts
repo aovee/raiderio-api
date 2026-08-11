@@ -1,5 +1,5 @@
 import type { Resource } from '../../core'
-import type { RaidDifficulty } from '../raiding/types'
+import type { RaidDifficulty, RaidInstance } from '../raiding/types'
 import type {
   GuildProfileFieldKey,
   ViewGuildBossKillResponse,
@@ -25,7 +25,7 @@ export function guildBossKill(
   region: string,
   realm: string,
   guild: string,
-  raid: string,
+  raid: RaidInstance,
   boss: string,
   difficulty: RaidDifficulty
 ): Resource<ViewGuildBossKillResponse> {
@@ -56,7 +56,7 @@ export function guildProfile(
   region: string,
   realm: string,
   name: string,
-  fields?: Array<GuildProfileFieldKey> // to improve
+  fields?: Array<GuildProfileFieldKey>
 ): Resource<ViewGuildProfileResponse> {
   return {
     apiVersion: 1,

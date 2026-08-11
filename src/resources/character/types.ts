@@ -11,7 +11,7 @@ import type {
   SeasonReference,
   Specialization
 } from '../../core'
-import type { KeystoneRun } from '../mythic-plus/types'
+import type { KeystoneRun, KeystoneRunCount } from '../mythic-plus/types'
 import type { RaidInstance, RaidProgression } from '../raiding/types'
 
 // ==================================================
@@ -50,7 +50,7 @@ export const characterProfileFieldKeys = [
   'talents:categorized',
   'guild',
   'covenant',
-  'mythic_plus_scores_by_season',
+  'raid_progression',
   'mythic_plus_ranks',
   'mythic_plus_recent_runs',
   'mythic_plus_best_runs',
