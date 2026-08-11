@@ -11,6 +11,8 @@ export * from './core'
 // Resource builders + response types (for advanced / custom usage)
 export * from './resources/character/character'
 export * from './resources/character/types'
+export * from './resources/client/client'
+export * from './resources/client/types'
 export * from './resources/general/general'
 export type * from './resources/general/types'
 export * from './resources/guild/guild'

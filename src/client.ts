@@ -2,6 +2,10 @@ import type { Resource } from './core'
 import { HttpClient } from './http/http'
 import type { ClientOptions } from './http/types'
 import { characterProfile } from './resources/character/character'
+import {
+  clientCharacterRivals,
+  clientRunReview
+} from './resources/client/client'
 import { periods, search } from './resources/general/general'
 import { guildBossKill, guildProfile } from './resources/guild/guild'
 import {
@@ -48,6 +52,15 @@ export class RaiderioClient {
   public readonly character = {
     profile: (...parameters: Parameters<typeof characterProfile>) =>
       this.http.request(characterProfile(...parameters))
+  }
+
+  /** Client endpoints. See {@link clientCharacterRivals} and {@link clientRunReview}. */
+  public readonly client = {
+    characterRivals: (
+      ...parameters: Parameters<typeof clientCharacterRivals>
+    ) => this.http.request(clientCharacterRivals(...parameters)),
+    runReview: (...parameters: Parameters<typeof clientRunReview>) =>
+      this.http.request(clientRunReview(...parameters))
   }
 
   /** General endpoints. See {@link periods}. */
