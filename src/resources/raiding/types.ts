@@ -59,6 +59,9 @@ export interface ViewRaidingStaticDataResponse {
 export const raidDifficulties = ['normal', 'heroic', 'mythic'] as const
 
 export const raidInstances = [
+  'the-tidebound-grotto',
+  'the-venomous-abyss',
+  'sporefall',
   'tier-mn-1',
   'manaforge-omega',
   'liberation-of-undermine',
