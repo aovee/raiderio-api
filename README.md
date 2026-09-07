@@ -95,6 +95,12 @@ const profile = await client.request(resource, { key: 'per-request-key' })
 
 The low-level `HttpClient` is also exported for fully custom setups.
 
+## Acknowledgements
+
+This project's design and structure are greatly inspired by
+[`blizzard-api`](https://github.com/Pewtro/blizzard-api) by
+[Pewtro](https://github.com/Pewtro). Many thanks for the excellent reference.
+
 ## License
 
 [MIT](./LICENSE)
