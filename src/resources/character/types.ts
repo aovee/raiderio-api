@@ -57,6 +57,7 @@ export const characterProfileFieldKeys = [
   'mythic_plus_best_runs:all',
   'mythic_plus_alternate_runs',
   'mythic_plus_alternate_runs:all',
+  'mythic_plus_scores_by_season',
   'mythic_plus_highest_level_runs',
   'mythic_plus_weekly_highest_level_runs',
   'mythic_plus_previous_weekly_highest_level_runs',
