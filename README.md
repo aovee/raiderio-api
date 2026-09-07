@@ -61,13 +61,14 @@ Per-request overrides are supported on the escape hatch (see below).
 
 Each method returns a `Promise` of the fully-typed response.
 
-| Group        | Methods                                                                                             |
-| ------------ | --------------------------------------------------------------------------------------------------- |
-| `character`  | `profile`                                                                                           |
-| `general`    | `periods`                                                                                           |
-| `guild`      | `bossKill`, `profile`                                                                               |
-| `mythicPlus` | `affixes`, `leaderboardCapacity`, `runDetails`, `runs`, `scoreTiers`, `seasonCutoffs`, `staticData` |
-| `raiding`    | `bossRankings`, `hallOfFame`, `progression`, `raidRankings`, `staticData`                           |
+| Group        | Methods                                                                                                             |
+| ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| `character`  | `profile`                                                                                                           |
+| `client`.    | `characterRivals`, `runReview`                                                                                      |
+| `general`    | `periods`, `search`                                                                                                 |
+| `guild`      | `bossKill`, `profile`                                                                                               |
+| `mythicPlus` | `affixes`, `leaderboardCapacity`, `runDetails`, `runs`, `scoreTiers`, `seasonCutoffs`, `staticData`, `specRankings` |
+| `raiding`    | `bossRankings`, `hallOfFame`, `progression`, `raidRankings`, `staticData`                                           |
 
 ```ts
 const affixes = await client.mythicPlus.affixes('us', 'en')
